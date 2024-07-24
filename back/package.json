@@ -5,10 +5,15 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build":"tsc",
-    "start": "node ./dist/index.js"
+    "build": "tsc",
+    "build:start": "tsc && node ./dist/index.js",
+    "start": "node ./dist/index.js",
+		"lint": "eslint . --ext .ts"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^9.7.0"
+  }
 }
