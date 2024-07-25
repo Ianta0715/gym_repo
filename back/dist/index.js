@@ -1,7 +1,10 @@
 "use strict";
-const num1 = 2;
-const num2 = 2;
-const suma = (a, b) => {
-    return a + b;
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-console.log(suma(num1, num2));
+Object.defineProperty(exports, "__esModule", { value: true });
+const server_1 = __importDefault(require("./server"));
+const envs_1 = require("./config/envs");
+server_1.default.listen(envs_1.PORT, () => {
+    console.log(`Servidor corriendo en PUERTO ${envs_1.PORT}`);
+});

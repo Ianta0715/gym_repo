@@ -1,7 +1,12 @@
-const num1:number = 2;
-const num2:number = 2;
+import server from './server';
+import { PORT } from './config/envs';
 
-const suma=( a:number , b:number ):number => {
-    return a + b;
-}
-console.log(suma(num1,num2));
+
+
+
+
+server.listen(PORT,()=>{
+    console.log(`Servidor corriendo en PUERTO ${PORT}`);
+    
+})
+
