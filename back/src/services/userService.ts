@@ -5,12 +5,14 @@ import { createCredential } from "./credentialService";
 let users:User[] = [];
 let nextUserId = 1;
 
-const returnAllUsers = () => {
-    return users;
+const returnAllUsers = async():Promise<User[]> => {
+    const allUsers:User[] = users;
+    return allUsers;
 };
 
-const returnUserById = (id:number):User | undefined =>{
- const userId = users.find(user=> user.userId === id);
+const returnUserById = async(id:number):Promise<User> =>{
+ const userId:User | undefined = users.find(user=> user.userId === id);
+ if(!userId) throw Error(`Usuario con id ${id} no encontrado`);
 return userId;
 };
 
@@ -18,7 +20,7 @@ const createNewUser = ( name:string,email:string,birthday: Date,nDni: number,use
     const newCredential = createCredential(username,password);
 
     const newUser:User ={
-        userId:nextUserId,
+        userId:nextUserId++,
         name,
         email,
         birthday,
