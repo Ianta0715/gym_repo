@@ -1,45 +1,43 @@
-import Appointment from '../interfaces/IAppointment';
-import { returnAllUsers } from './userService';  // Asegúrate de que esta importación sea correcta.
+import { AppDataSource } from '../config/data-source';
+import { Appointment } from '../entities/Appointment';
+import { User } from '../entities/User';
 
-let appointments: Appointment[] = [];
-let nextAppointmentId = 1;
+const appointmentRepository = AppDataSource.getRepository(Appointment);
 
-// Obtener todos los turnos
-export const returnAllAppointments = (): Appointment[] => {
-    return appointments;
+export const returnAllAppointments = async (): Promise<Appointment[]> => {
+    return await appointmentRepository.find({ relations: ["user"] });
 };
 
-// Obtener un turno por ID
-export const returnAppointmentById = (id: number): Appointment | undefined => {
-    return appointments.find(appointment => appointment.AppointmentId === id);
+export const returnAppointmentById = async (id: number): Promise<Appointment | null> => {
+    return await appointmentRepository.findOne({ where: { AppointmentId: id }, relations: ["user"] });
 };
 
-// Crear un nuevo turno
 export const createNewAppointment = async (date: Date, time: string, userId: number, status: 'active' | 'cancelled'): Promise<number> => {
-    // Esperar a que la promesa devuelva el resultado
-    const users = await returnAllUsers();
+    const userRepository = AppDataSource.getRepository(User);
+    const user = await userRepository.findOneBy({ userId });
 
-    const userExists = users.some(user => user.userId === userId);
-    if (!userExists) {
+    if (!user) {
         throw new Error(`El ID de usuario ${userId} no es válido`);
     }
 
-    const newAppointment: Appointment = {
-        AppointmentId: nextAppointmentId++,
+    const newAppointment = appointmentRepository.create({
         date,
         time,
-        userId,
+        user,
         status
-    };
-    appointments.push(newAppointment);
+    });
+
+    await appointmentRepository.save(newAppointment);
     return newAppointment.AppointmentId;
 };
 
-// Cambiar el estado de un turno a "cancelled"
 export const cancelAppointment = async (id: number): Promise<void> => {
-    const appointment = appointments.find(app => app.AppointmentId === id);
+    const appointment = await appointmentRepository.findOneBy({ AppointmentId: id });
+
     if (!appointment) {
-        throw new Error(`Turno con ID ${id} no encontrado`);
+        throw new Error(`El ID de appointment ${id} no es válido`);
     }
+
     appointment.status = 'cancelled';
+    await appointmentRepository.save(appointment);
 };

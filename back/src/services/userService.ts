@@ -1,36 +1,33 @@
-import User from "../interfaces/IUser";
+import { AppDataSource } from "../config/data-source";
+import { User } from "../entities/User";
+import IUser from "../interfaces/IUser";
 import { createCredential } from "./credentialService";
 
 
-let users:User[] = [];
-let nextUserId = 1;
 
 const returnAllUsers = async():Promise<User[]> => {
-    const allUsers:User[] = users;
-    return allUsers;
+    const userRepository = AppDataSource.getRepository(User)
+    return await userRepository.find();
 };
 
-const returnUserById = async(id:number):Promise<User> =>{
- const userId:User | undefined = users.find(user=> user.userId === id);
- if(!userId) throw Error(`Usuario con id ${id} no encontrado`);
-return userId;
+const returnUserById = async (userId: number): Promise<User | null> => {
+    const userRepository = AppDataSource.getRepository(User);
+    return await userRepository.findOneBy({ userId });
 };
 
-const createNewUser = ( name:string,email:string,birthday: Date,nDni: number,username:string, password:string ):number => {
-    const newCredential = createCredential(username,password);
+const createNewUser = async (name: string, email: string, birthday: Date, nDni: number, username: string, password: string): Promise<number> => {
+    const userRepository = AppDataSource.getRepository(User);
+    const credentialId = await createCredential(username, password);
 
-    const newUser:User ={
-        userId:nextUserId++,
-        name,
-        email,
-        birthday,
-        nDni,
-        credentialId:newCredential
-    }
+    const newUser = new User();
+    newUser.name = name;
+    newUser.email = email;
+    newUser.birthday = birthday;
+    newUser.nDni = nDni;
+    newUser.credentialId = credentialId;
 
-    users.push(newUser);
-    return newUser.userId;
-
+    const savedUser = await userRepository.save(newUser);
+    return savedUser.userId;
 };
 
 

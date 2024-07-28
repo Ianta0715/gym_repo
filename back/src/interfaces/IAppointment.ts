@@ -1,4 +1,4 @@
-interface Appointment {
+interface IAppointment {
     AppointmentId:number,
     date: Date,
     time: string,
@@ -6,4 +6,4 @@ interface Appointment {
     status: 'active' | 'cancelled'
 }
 
-export default Appointment;
+export default IAppointment;

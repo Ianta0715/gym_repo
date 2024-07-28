@@ -1,4 +1,4 @@
-interface User {
+interface IUser {
     userId:number,
     name:string,
     email:string,
@@ -7,4 +7,4 @@ interface User {
     credentialId: number 
 }
 
-export default User;
+export default IUser;

@@ -1,7 +1,7 @@
-interface Credential {
+interface ICredential {
     credentialId: number;
     username: string;
     password: string;
 }
 
-export default Credential;
+export default ICredential;
