@@ -7,7 +7,7 @@ import { validateCredential } from '../services/credentialService';
 
 export const getAllUsers = async(req: Request, res: Response) => {
   try {
-    const users:User[] = await returnAllUsers();
+    const users = await returnAllUsers();
     res.status(200).json(users);
   } catch (error:any) {
     res.status(400).json({message:error.message})

@@ -18,9 +18,9 @@ export class Appointment {
     })
     time: string
     
-    @ManyToOne(() => User, user => user.userId)
+    @ManyToOne(() => User, user => user.appointments)
     @JoinColumn({ name: "userId" })
-    user: User;
+    user!: User;
     
     @Column({
         length:100    
