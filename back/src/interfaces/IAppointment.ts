@@ -5,6 +5,7 @@ export enum AppointmentStatus {
 }
 interface IAppointment {
     AppointmentId:number,
+    description:string, 
     date: Date,
     time: string,
     userId: number,

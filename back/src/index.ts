@@ -1,12 +1,14 @@
-import server from './server';
-import { PORT } from './config/envs';
 import 'reflect-metadata';
 import { AppDataSource } from './config/data-source';
+import server from './server';
+import { PORT } from './config/envs';
 
 
 AppDataSource.initialize()
-.then( () => {
+.then( async() => {
     console.log("Conexion a la base de datos realizada con exito");
+
+    await AppDataSource.synchronize(true)
     server.listen(PORT , ()=> {
         console.log(`Servidor corriendo en PUERTO ${PORT}`);
         

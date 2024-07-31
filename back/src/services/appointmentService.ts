@@ -12,7 +12,7 @@ export const returnAppointmentById = async (id: number): Promise<Appointment | n
     return await appointmentRepository.findOne({ where: { AppointmentId: id }, relations: ["user"] });
 };
 
-export const createNewAppointment = async (date: Date, time: string, userId: number, status: 'active' | 'cancelled'): Promise<number> => {
+export const createNewAppointment = async (description:string , date: Date, time: string, userId: number, status: 'active' | 'cancelled'): Promise<Appointment> => {
     const userRepository = AppDataSource.getRepository(User);
     const user = await userRepository.findOneBy({ userId });
 
@@ -21,6 +21,7 @@ export const createNewAppointment = async (date: Date, time: string, userId: num
     }
 
     const newAppointment = appointmentRepository.create({
+        description,
         date,
         time,
         user,
@@ -28,7 +29,7 @@ export const createNewAppointment = async (date: Date, time: string, userId: num
     });
 
     await appointmentRepository.save(newAppointment);
-    return newAppointment.AppointmentId;
+    return newAppointment;
 };
 
 export const cancelAppointment = async (id: number): Promise<void> => {

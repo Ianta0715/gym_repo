@@ -25,10 +25,10 @@ export const getAppointmentById = async (req: Request<{ id: string }>, res: Resp
 };
 
 export const scheduleAppointment = async (req: Request, res: Response) => {
-    const { date, time, userId, status } = req.body;
+    const { description , date, time, userId, status } = req.body;
     try {
-        const appointmentId = await createNewAppointment(new Date(date), time, userId, status);
-        res.status(201).json({ AppointmentId: appointmentId });
+        const newAppointment = await createNewAppointment(description,new Date(date), time, userId, status);
+        res.status(201).json(newAppointment);
     } catch (error: any) {
         res.status(400).json({ message: error.message });
     }
@@ -39,7 +39,7 @@ export const cancelAppointmentController = async (req: Request<{ id: string }>, 
     try {
         await cancelAppointment(Number(id));
         res.status(200).json({ message: 'Appointment cancelled successfully' });
-    } catch (error: any) {
+    } catch (error: any) { 
         res.status(400).json({ message: error.message });
     }
 };
