@@ -1,13 +1,17 @@
+import React from 'react';
+import { Description } from "../components/Description";
 import { Navbar } from "../components/Navbar";
 import './Home.css';
+import { ImagesContainer } from '../components/ImagesContainer';
 
- const Home = () => {
-    return (
-        <>
-        <h1>HOME</h1>
-        <Navbar />
-        </>
-    )
+const Home = () => {
+  return (
+    <>
+      
+      <ImagesContainer />
+      <Description />
+    </>
+  );
 }
 
 export default Home;

@@ -4,15 +4,21 @@ export const appointment = [
         date: '2024-07-31',
         time: '09:00',
         description: 'Consulta general',
-        userId: 1,
-        status: 'confirmed'
+        
+        status: 'activo'
       },
       {
         id: 2,
         date: '2024-08-01',
         time: '10:30',
         description: 'Revisión de resultados',
-        userId: 2,
-        status: 'pending'
+        status: 'cancelado'
+      },
+      {
+        id: 3,
+        date: '2024-10-08',
+        time: '11:00',
+        description: 'cirujia',
+        status: 'activo'
       }
 ];
