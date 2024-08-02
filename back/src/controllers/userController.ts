@@ -28,7 +28,7 @@ export const getUserById = async(req: Request<{id:string}>, res: Response) => {
 export const registerUser = async (req: Request<{},{},NewUserRequest>, res: Response) => {
   const { name, email, birthday, nDni, username, password } = req.body;
   try {
-      const userId = createNewUser(name, email, new Date(birthday), nDni, username, password);
+      const userId = createNewUser(name, email, new Date(birthday), username, password);
       res.status(201).json({ message: 'Usuario registrado exitosamente', userId });
   } catch (error: any) {
       res.status(400).json({ message: error.message });
