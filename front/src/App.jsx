@@ -5,6 +5,8 @@ import 'normalize.css';
 import Home from './views/Home'
 import MyAppointments from './views/MyAppointments'
 import { Navbar } from './components/Navbar';
+import { Register } from './views/Register';
+import { Login } from './views/Login';
 
 function App() {
  
@@ -13,7 +15,9 @@ function App() {
     <>
       <Navbar />
       <Home/>
-      <MyAppointments />
+     {/* <MyAppointments />*/}
+      <Register />
+      <Login />
     </>
   )
 }
