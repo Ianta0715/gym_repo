@@ -8,7 +8,6 @@ AppDataSource.initialize()
 .then( async() => {
     console.log("Conexion a la base de datos realizada con exito");
 
-    await AppDataSource.synchronize(true)
     server.listen(PORT , ()=> {
         console.log(`Servidor corriendo en PUERTO ${PORT}`);
         
