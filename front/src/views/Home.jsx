@@ -1,8 +1,8 @@
 import React from 'react';
 import { Description } from "../components/Description";
-import { Navbar } from "../components/Navbar";
 import './Home.css';
 import { ImagesContainer } from '../components/ImagesContainer';
+import { Register } from './Register';
 
 const Home = () => {
   return (
@@ -10,6 +10,7 @@ const Home = () => {
       
       <ImagesContainer />
       <Description />
+      <Register/>
     </>
   );
 }

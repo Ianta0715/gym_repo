@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { appointment } from '../helpers/myAppointments';
 import AppointmentCard from '../components/AppointmentCard';
 import axios from 'axios';
 
