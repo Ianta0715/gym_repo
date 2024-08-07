@@ -1,0 +1,13 @@
+.flex-container {
+    display: flex;
+    justify-content: space-around; /* Distribuye espacio alrededor de los items */
+    align-items: flex-start; /* Alinea los items al inicio del contenedor */
+    gap: 20px; /* Espacio entre los items */
+    padding: 20px; /* Relleno del contenedor */
+  }
+  
+  .form-container {
+    flex: 1; /* Hace que cada contenedor tome un espacio igual dentro del contenedor flex */
+    max-width: 45%; /* Asegura que los formularios no ocupen más del 45% del ancho del contenedor padre */
+  }
+  

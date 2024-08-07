@@ -5,11 +5,12 @@ import 'normalize.css';
 import Home from './views/Home'
 import MyAppointments from './views/MyAppointments'
 import { Navbar } from './components/Navbar';
-import { Register } from './views/Register';
-import { Login } from './views/Login';
+import { Register } from './components/Register';
+import { Login } from './components/Login';
 import {Route, Routes, useLocation} from 'react-router-dom';
 import { Activities } from './views/Activities';
 import { AboutUs } from './views/AboutUs';
+import { LoginRegister } from './views/LoginRegister';
 
 function App() {
   const location = useLocation();
@@ -21,6 +22,7 @@ function App() {
     
     <Routes>
       <Route path='/home' element={<Home/>}/>
+      <Route path='/' element={<Home/>}/>
         
       <Route path='/appointments' element={ <MyAppointments /> }/>
       
@@ -31,6 +33,9 @@ function App() {
       <Route path='/aboutUs' element={<AboutUs /> }/>
       
       <Route path='/activities' element={<Activities /> }/>
+      
+      <Route path='/register-login' element={<LoginRegister /> }/>
+
            
       </Routes>
     </>
