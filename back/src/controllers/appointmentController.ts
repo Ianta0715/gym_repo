@@ -10,14 +10,14 @@ export const getAllAppointments = async (req: Request, res: Response) => {
     }
 };
 
-export const getAppointmentById = async (req: Request<{ id: string }>, res: Response) => {
-    const { id } = req.params;
+export const getAppointmentsById = async (req: Request<{ userId: string }>, res: Response) => {
+    const { userId } = req.params;
     try {
-        const appointment = await returnAppointmentById(Number(id));
-        if (!appointment) {
-            res.status(404).json({ message: `Appointment con ID ${id} no encontrado` });
+        const appointments = await returnAppointmentById(Number(userId));
+        if (!appointments.length) {
+            res.status(404).json({ message:  `No appointments found for user with ID ${userId}`  });
         } else {
-            res.status(200).json(appointment);
+            res.status(200).json(appointments);
         }
     } catch (error: any) {
         res.status(400).json({ message: error.message });

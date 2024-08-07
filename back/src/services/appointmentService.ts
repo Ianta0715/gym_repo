@@ -8,8 +8,8 @@ export const returnAllAppointments = async (): Promise<Appointment[]> => {
     return await appointmentRepository.find({ relations: ["user"] });
 };
 
-export const returnAppointmentById = async (id: number): Promise<Appointment | null> => {
-    return await appointmentRepository.findOne({ where: { AppointmentId: id }, relations: ["user"] });
+export const returnAppointmentById = async (userId: number): Promise<Appointment[]> => {
+    return await appointmentRepository.find({ where: { user: { userId } }, relations: ["user"] });
 };
 
 export const createNewAppointment = async (description:string , date: Date, time: string, userId: number, status: 'active' | 'cancelled'): Promise<Appointment> => {

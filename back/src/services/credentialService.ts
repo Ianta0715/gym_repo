@@ -19,9 +19,9 @@ const createCredential = async(username:string,password:string):Promise<number> 
 
 const validateCredential = async(username:string , password:string):Promise<number | null> => {
     const credentialRepository = AppDataSource.getRepository(Credential);
-    const credential = await credentialRepository.findOneBy({ username });
+    const credential = await credentialRepository.findOne({ where: { username:username,password:password }, relations: {user:true}});
     if (credential && credential.password === password) {
-        return credential.credentialId;
+        return credential.user.userId;
     }
     return null;
 

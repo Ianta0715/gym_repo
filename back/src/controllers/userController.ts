@@ -38,9 +38,10 @@ export const registerUser = async (req: Request<{},{},NewUserRequest>, res: Resp
 export const loginUser = async (req: Request<{},{},Credential>, res: Response) => {
   const { username, password } = req.body;
   try {
-      const credentialId = validateCredential(username, password);
+      const credentialId = await validateCredential(username, password);
       if (credentialId !== null) {
-          res.status(200).json({ message: 'Login exitoso', credentialId });
+        const user = await returnUserById(credentialId)
+          res.status(200).json({ message: 'Login exitoso',login:true, actualUser:user  });
       } else {
           res.status(401).json({ message: 'Credenciales inválidas' });
       }
