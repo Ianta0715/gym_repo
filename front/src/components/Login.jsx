@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setUser } from '../redux/reducer';
+import Swal from 'sweetalert2';
 
 export const Login = () => {
   const initialState = { 
@@ -53,7 +54,11 @@ export const Login = () => {
       
 
       dispatch(setUser(userData));
-      alert("Usuario logueado.");
+      Swal.fire({
+        title: "User Login",
+        text: "welcome!",
+        icon: "success"
+      });
       setUserState(initialState);
       setSuccess('Login Successful');
       setError(null);

@@ -15,8 +15,28 @@ import pilates3 from '../assets/pilates3.jpg';
 import pilates4 from '../assets/pilates4.jpg';
 import pilates5 from '../assets/pilates5.jpg';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2'
 
 export const Activities = () => {
+  const isLogged = useSelector((state)=> state.user.isLogged);
+  const navigate = useNavigate();
+  console.log(isLogged);
+  
+
+  const handleBookAppointment = () => {
+    if (!isLogged) {
+      Swal.fire({
+        title: 'Hey!',
+        text: 'You need to be registered to book an appointment',
+        icon: 'warning',
+        confirmButtonText: 'Cool'
+      });
+      navigate('/register-login');
+    }
+  }
+
   return (
     <div className="bg-white py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -50,7 +70,8 @@ export const Activities = () => {
             className="col-span-2 col-start-2 max-h-56 w-full object-cover border border-gray-300 rounded-lg transition-transform duration-300 ease-in-out transform hover:scale-110 sm:col-start-auto lg:col-span-1"
           />
           <div className="col-span-4 flex justify-end mt-4 lg:col-span-5">
-            <button className="rounded-md bg-blue-600 text-white px-4 py-2 text-sm font-semibold shadow-sm transition-transform duration-300 ease-in-out transform hover:scale-110">
+            <button className="rounded-md bg-blue-600 text-white px-4 py-2 text-sm font-semibold shadow-sm transition-transform duration-300 ease-in-out transform hover:scale-110"
+                    onClick={handleBookAppointment}>
             <Link to='/appointments'> Book an appointment </Link>
             </button>
           </div>
@@ -88,7 +109,8 @@ export const Activities = () => {
             className="col-span-2 col-start-2 max-h-56 w-full object-cover border border-gray-300 rounded-lg transition-transform duration-300 ease-in-out transform hover:scale-110 sm:col-start-auto lg:col-span-1"
           />
             <div className="col-span-4 flex justify-end mt-4 lg:col-span-5">
-            <button className="rounded-md bg-blue-600 text-white px-4 py-2 text-sm font-semibold shadow-sm transition-transform duration-300 ease-in-out transform hover:scale-110">
+            <button className="rounded-md bg-blue-600 text-white px-4 py-2 text-sm font-semibold shadow-sm transition-transform duration-300 ease-in-out transform hover:scale-110"
+                    onClick={handleBookAppointment}>
             <Link to='/appointments'> Book an appointment </Link>
             </button>
           </div>
@@ -125,7 +147,8 @@ export const Activities = () => {
             className="col-span-2 col-start-2 max-h-56 w-full object-cover border border-gray-300 rounded-lg transition-transform duration-300 ease-in-out transform hover:scale-110 sm:col-start-auto lg:col-span-1"
           />
            <div className="col-span-4 flex justify-end mt-4 lg:col-span-5">
-            <button className="rounded-md bg-blue-600 text-white px-4 py-2 text-sm font-semibold shadow-sm transition-transform duration-300 ease-in-out transform hover:scale-110">
+            <button className="rounded-md bg-blue-600 text-white px-4 py-2 text-sm font-semibold shadow-sm transition-transform duration-300 ease-in-out transform hover:scale-110"
+                    onClick={handleBookAppointment}>
              <Link to='/appointments'> Book an appointment </Link>
             </button>
           </div>
