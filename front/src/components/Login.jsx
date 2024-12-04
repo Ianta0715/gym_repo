@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import logo from '../assets/logoBoxFit.png';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
@@ -49,8 +49,7 @@ export const Login = () => {
       
       const userData = response.data.actualUser.userId;
         
-      console.log(userData); 
-      console.log(response.data.actualUser.userId);
+      
       
 
       dispatch(setUser(userData));

@@ -1,4 +1,4 @@
-import React from 'react';
+
 import crossfit1 from '../assets/crossfit1.jpg';
 import crossfit2 from '../assets/crossfit2.jpg';
 import crossfit3 from '../assets/crossfit3.jpg';
@@ -22,7 +22,7 @@ import Swal from 'sweetalert2'
 export const Activities = () => {
   const isLogged = useSelector((state)=> state.user.isLogged);
   const navigate = useNavigate();
-  console.log(isLogged);
+  
   
 
   const handleBookAppointment = () => {

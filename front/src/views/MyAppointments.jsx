@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { setUserAppointments, cancelUserAppointment, addUserAppointment } from '../redux/reducer';
+import { setUserAppointments, addUserAppointment } from '../redux/reducer';
 import AppointmentCard from '../components/AppointmentCard';
 import axios from 'axios';
 
@@ -11,8 +11,8 @@ export const MyAppointments = () => {
   const login = useSelector((state) => state.user.isLogged);
   const id = useSelector((state) => state.user.user);
   const appointments = useSelector((state) => state.user.appointments);
-  console.log(id);
-  console.log(appointments.AppointmentId);
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+  const options = ["Box", "Crossfit", "Pilates"];
   
   
  
@@ -48,6 +48,11 @@ export const MyAppointments = () => {
       ...formData,
       [name]: value
     });
+    setDropdownVisible(true)
+  };
+  const handleOptionClick = (option) => {
+    setFormData({ ...formData, description: option });
+    setDropdownVisible(false); 
   };
 
   const handleSubmit = async (event) => {
@@ -122,8 +127,26 @@ export const MyAppointments = () => {
                       value={formData.description}
                       onChange={handleInputChange}
                       className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                      onFocus={() =>setDropdownVisible(true)}
                     />
                   </div>
+                  {dropdownVisible && (
+              <ul className="absolute z-10 mt-1 max-w-md bg-white border border-gray-300 rounded-md shadow-lg">
+                {options
+                  .filter((option) =>
+                    option.toLowerCase().includes(formData.description.toLowerCase())
+                  )
+                  .map((option) => (
+                    <li
+                      key={option}
+                      onClick={() => handleOptionClick(option)}
+                      className="cursor-pointer px-4 py-2 hover:bg-gray-100"
+                    >
+                      {option}
+                    </li>
+                  ))}
+              </ul>
+            )}
                 </div>
               </div>
             </div>
@@ -191,15 +214,28 @@ export const MyAppointments = () => {
       <br />
       <h1>My Appointments</h1>
       {appointments.length > 0 ? (
-        appointments.map((appointment) => (
-          <AppointmentCard
-            key={appointment.AppointmentId}
-            appointment={appointment}
-          />
-        ))
-      ) : (
-        <p>No appointments registered.</p>
-      )}
+  appointments.map((appointment) => {
+    const appointmentDate = new Date(appointment.date); 
+    const today = new Date(); 
+    today.setHours(0, 0, 0, 0); 
+
+    const isPast = appointmentDate < today; 
+
+    return (
+      <div
+        key={appointment.AppointmentId}
+        style={{
+          opacity: isPast ? 0.5 : 1, 
+          pointerEvents: isPast ? 'none' : 'auto', 
+        }}
+      >
+        <AppointmentCard appointment={appointment} />
+      </div>
+    );
+  })
+) : (
+  <p>No appointments registered.</p>
+)}
     </>
   );
 };
