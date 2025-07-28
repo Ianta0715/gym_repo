@@ -12,17 +12,31 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-require("reflect-metadata");
-const data_source_1 = require("./config/data-source");
-const server_1 = __importDefault(require("./server"));
-const envs_1 = require("./config/envs");
-data_source_1.AppDataSource.initialize()
-    .then(() => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("Conexion a la base de datos realizada con exito");
-    server_1.default.listen(envs_1.PORT, () => {
-        console.log(`Servidor corriendo en PUERTO ${envs_1.PORT}`);
-    });
-}))
-    .catch((err) => {
-    console.error('Error al inicializar la BD ', err);
+exports.enviarCorreo = void 0;
+const nodemailer_1 = __importDefault(require("nodemailer"));
+const transporter = nodemailer_1.default.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    auth: {
+        user: 'iantarquini4@gmail.com',
+        pass: 'rkjk takr nhbm igsq',
+    },
 });
+const enviarCorreo = (to, subject, html) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const info = yield transporter.sendMail({
+            from: 'iantarquini4@gmail.com',
+            to,
+            subject,
+            html,
+        });
+        console.log(`Correo enviado: ${info.response}`);
+    }
+    catch (error) {
+        console.error('Error al enviar en correo: ', error.message);
+        console.error('Stack:', error.stack);
+        throw new Error('No se pudo enviar el correo.');
+    }
+});
+exports.enviarCorreo = enviarCorreo;

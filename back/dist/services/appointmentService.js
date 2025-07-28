@@ -9,45 +9,52 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.cancelAppointment = exports.createNewAppointment = exports.returnAppointmentById = exports.returnAllAppointments = void 0;
-const userService_1 = require("./userService"); // Asegúrate de que esta importación sea correcta.
-let appointments = [];
-let nextAppointmentId = 1;
-// Obtener todos los turnos
-const returnAllAppointments = () => {
-    return appointments;
-};
+exports.cancelAppointment = exports.createNewAppointment = exports.returnAppointmentsByUserId = exports.returnAppointmentById = exports.returnAllAppointments = void 0;
+const data_source_1 = require("../config/data-source");
+const Appointment_1 = require("../entities/Appointment");
+const User_1 = require("../entities/User");
+const appointmentRepository = data_source_1.AppDataSource.getRepository(Appointment_1.Appointment);
+const returnAllAppointments = () => __awaiter(void 0, void 0, void 0, function* () {
+    return yield appointmentRepository.find({ relations: ["user"] });
+});
 exports.returnAllAppointments = returnAllAppointments;
-// Obtener un turno por ID
-const returnAppointmentById = (id) => {
-    return appointments.find(appointment => appointment.AppointmentId === id);
-};
+const returnAppointmentById = (appointmentId) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield appointmentRepository.findOne({
+        where: { AppointmentId: appointmentId },
+        relations: ["user"],
+    });
+});
 exports.returnAppointmentById = returnAppointmentById;
-// Crear un nuevo turno
-const createNewAppointment = (date, time, userId, status) => __awaiter(void 0, void 0, void 0, function* () {
-    // Esperar a que la promesa devuelva el resultado
-    const users = yield (0, userService_1.returnAllUsers)();
-    const userExists = users.some(user => user.userId === userId);
-    if (!userExists) {
+const returnAppointmentsByUserId = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield appointmentRepository.find({
+        where: { user: { userId } },
+        relations: ["user"],
+    });
+});
+exports.returnAppointmentsByUserId = returnAppointmentsByUserId;
+const createNewAppointment = (description, date, time, userId, status) => __awaiter(void 0, void 0, void 0, function* () {
+    const userRepository = data_source_1.AppDataSource.getRepository(User_1.User);
+    const user = yield userRepository.findOneBy({ userId });
+    if (!user) {
         throw new Error(`El ID de usuario ${userId} no es válido`);
     }
-    const newAppointment = {
-        AppointmentId: nextAppointmentId++,
+    const newAppointment = appointmentRepository.create({
+        description,
         date,
         time,
-        userId,
+        user,
         status
-    };
-    appointments.push(newAppointment);
-    return newAppointment.AppointmentId;
+    });
+    yield appointmentRepository.save(newAppointment);
+    return newAppointment;
 });
 exports.createNewAppointment = createNewAppointment;
-// Cambiar el estado de un turno a "cancelled"
 const cancelAppointment = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const appointment = appointments.find(app => app.AppointmentId === id);
+    const appointment = yield appointmentRepository.findOneBy({ AppointmentId: id });
     if (!appointment) {
-        throw new Error(`Turno con ID ${id} no encontrado`);
+        throw new Error(`El ID de appointment ${id} no es válido`);
     }
     appointment.status = 'cancelled';
+    yield appointmentRepository.save(appointment);
 });
 exports.cancelAppointment = cancelAppointment;

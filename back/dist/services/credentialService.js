@@ -1,23 +1,34 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateCredential = exports.createCredential = void 0;
+const data_source_1 = require("../config/data-source");
+const Credential_1 = require("../entities/Credential");
 let credentials = [];
 let nextId = 1;
-const createCredential = (username, password) => {
-    const newCredential = {
-        credentialId: nextId++,
-        username,
-        password
-    };
-    credentials.push(newCredential);
-    return newCredential.credentialId;
-};
+const createCredential = (username, password) => __awaiter(void 0, void 0, void 0, function* () {
+    const credentialRepository = data_source_1.AppDataSource.getRepository(Credential_1.Credential);
+    const newCredential = new Credential_1.Credential();
+    newCredential.username = username;
+    newCredential.password = password;
+    const savedCredential = yield credentialRepository.save(newCredential);
+    return savedCredential.credentialId;
+});
 exports.createCredential = createCredential;
-const validateCredential = (username, password) => {
-    const credential = credentials.find(cred => cred.username === username);
+const validateCredential = (username, password) => __awaiter(void 0, void 0, void 0, function* () {
+    const credentialRepository = data_source_1.AppDataSource.getRepository(Credential_1.Credential);
+    const credential = yield credentialRepository.findOne({ where: { username: username, password: password }, relations: { user: true } });
     if (credential && credential.password === password) {
-        return credential.credentialId;
+        return credential.user.userId;
     }
     return null;
-};
+});
 exports.validateCredential = validateCredential;

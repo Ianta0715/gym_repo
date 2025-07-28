@@ -10,32 +10,34 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createNewUser = exports.returnUserById = exports.returnAllUsers = void 0;
-const credentialService_1 = require("./credentialService");
-let users = [];
-let nextUserId = 1;
+const data_source_1 = require("../config/data-source");
+const Credential_1 = require("../entities/Credential");
+const User_1 = require("../entities/User");
 const returnAllUsers = () => __awaiter(void 0, void 0, void 0, function* () {
-    const allUsers = users;
-    return allUsers;
+    const userRepository = data_source_1.AppDataSource.getRepository(User_1.User);
+    return yield userRepository.find({ relations: ["credentialId", "appointments"] });
 });
 exports.returnAllUsers = returnAllUsers;
-const returnUserById = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const userId = users.find(user => user.userId === id);
-    if (!userId)
-        throw Error(`Usuario con id ${id} no encontrado`);
-    return userId;
+const returnUserById = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const userRepository = data_source_1.AppDataSource.getRepository(User_1.User);
+    return yield userRepository.findOne({ where: { userId }, relations: ["credentialId", "appointments"] });
 });
 exports.returnUserById = returnUserById;
-const createNewUser = (name, email, birthday, nDni, username, password) => {
-    const newCredential = (0, credentialService_1.createCredential)(username, password);
-    const newUser = {
-        userId: nextUserId,
-        name,
-        email,
-        birthday,
-        nDni,
-        credentialId: newCredential
-    };
-    users.push(newUser);
-    return newUser.userId;
-};
+const createNewUser = (name, email, birthday, username, password) => __awaiter(void 0, void 0, void 0, function* () {
+    const userRepository = data_source_1.AppDataSource.getRepository(User_1.User);
+    const credentialRepository = data_source_1.AppDataSource.getRepository(Credential_1.Credential);
+    // Create and save new credential
+    const credential = new Credential_1.Credential();
+    credential.username = username;
+    credential.password = password;
+    const savedCredential = yield credentialRepository.save(credential);
+    // Create new user
+    const newUser = new User_1.User();
+    newUser.name = name;
+    newUser.email = email;
+    newUser.birthday = birthday;
+    newUser.credentialId = savedCredential;
+    const savedUser = yield userRepository.save(newUser);
+    return savedUser.userId;
+});
 exports.createNewUser = createNewUser;

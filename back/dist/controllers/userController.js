@@ -36,7 +36,7 @@ exports.getUserById = getUserById;
 const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, email, birthday, nDni, username, password } = req.body;
     try {
-        const userId = (0, userService_1.createNewUser)(name, email, new Date(birthday), nDni, username, password);
+        const userId = (0, userService_1.createNewUser)(name, email, new Date(birthday), username, password);
         res.status(201).json({ message: 'Usuario registrado exitosamente', userId });
     }
     catch (error) {
@@ -47,9 +47,10 @@ exports.registerUser = registerUser;
 const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { username, password } = req.body;
     try {
-        const credentialId = (0, credentialService_1.validateCredential)(username, password);
+        const credentialId = yield (0, credentialService_1.validateCredential)(username, password);
         if (credentialId !== null) {
-            res.status(200).json({ message: 'Login exitoso', credentialId });
+            const user = yield (0, userService_1.returnUserById)(credentialId);
+            res.status(200).json({ message: 'Login exitoso', login: true, actualUser: user });
         }
         else {
             res.status(401).json({ message: 'Credenciales inválidas' });
