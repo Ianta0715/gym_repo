@@ -43,7 +43,7 @@ export const Register = () => {
         }
 
         try {
-            const response = await axios.post('http://localhost:3000/users/register', {
+            const response = await axios.post(' https://gym-repo-42a3.onrender.com/users/register', {
                 name: formData.firstName + ' ' + formData.lastName, 
                 email: formData.email,
                 birthday: new Date().toISOString().split('T')[0], 

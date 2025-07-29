@@ -15,7 +15,7 @@ export default function AppointmentCard({ appointment }) {
   const handleCancelAppointment = async () => {
     if (window.confirm('Are you sure you want to cancel this appointment?')) {
       try {
-        await axios.put(`http://localhost:3000/appointments/cancel/${appointment.AppointmentId}`);
+        await axios.put(` https://gym-repo-42a3.onrender.com/appointments/cancel/${appointment.AppointmentId}`);
         setLocalStatus('cancelled');
         dispatch(cancelUserAppointment({ id: appointment.AppointmentId }));
       } catch (error) {

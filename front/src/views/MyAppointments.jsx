@@ -58,7 +58,7 @@ export const MyAppointments = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/appointments', {
+      const response = await axios.post(' https://gym-repo-42a3.onrender.com/appointments', {
         ...formData,
         userId: id,
         status: 'active',

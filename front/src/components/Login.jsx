@@ -44,7 +44,7 @@ export const Login = () => {
     }
    
     try {
-      const response = await axios.post('http://localhost:3000/users/login', user);
+      const response = await axios.post(' https://gym-repo-42a3.onrender.com/users/login', user);
 
       
       const userData = response.data.actualUser.userId;
